@@ -48,8 +48,8 @@
   <button class="stopButton" onclick="stopGame()">Stop</button>
 
 <script>
-  var moleLoop;
-  var timerLoop;
+  let moleLoop;
+  let timerLoop;
  
   function startGame() {
     startTimer();
@@ -96,26 +96,20 @@
   }
 
   function showMoles() {
-    console.log('starting game...');
-    moleLoop = setInterval(showMole, 1500);
-  }
-  
-  function showMole() {
-    const moles = Array.from(document.querySelectorAll('.mole:not(.active)'));
-    const moleIndex = Math.floor(Math.random() * moles.length);
-    const mole = moles[moleIndex];
-    if (!mole) return;
-    mole.classList.add('active');
-    const moleTimeout = (Math.random() * 2) + 1;
-    setTimeout(function() { hideMole(mole) }, moleTimeout * 1000);
-  }
-  
-  function hideMole(mole) {
-    mole.classList.remove('active');
+    moleLoop = setInterval(function showMole() {
+      const moles = Array.from(document.querySelectorAll('.mole:not(.active)'));
+      const moleIndex = Math.floor(Math.random() * moles.length);
+      const mole = moles[moleIndex];
+      if (!mole) return;
+      mole.classList.add('active');
+      const moleTimeout = (Math.random() * 2) + 1;
+      setTimeout(function() {
+        mole.classList.remove('active');
+      }, moleTimeout * 1000);
+    }, 1500);
   }
   
   function whackMole(mole) {
-    console.log(mole);
     if (!mole.classList.contains('active')) { return; }
     mole.classList.remove('active');
     const score = document.getElementsByClassName('score')[0];

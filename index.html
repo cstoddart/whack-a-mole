@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Whack-A-Mole</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1 class="title">Whack-A-Mole</h1>
+  <div class="battlefield">
+    <div class="moleHole">
+      <div class="mole" onclick="whackMole(event.target)"></div>
+    </div>
+    <div class="moleHole">
+      <div class="mole" onclick="whackMole(event.target)"></div>
+    </div>
+    <div class="moleHole">
+      <div class="mole" onclick="whackMole(event.target)"></div>
+    </div>
+    <div class="moleHole">
+      <div class="mole" onclick="whackMole(event.target)"></div>
+    </div>
+    <div class="moleHole">
+      <div class="mole" onclick="whackMole(event.target)"></div>
+    </div>
+    <div class="moleHole">
+      <div class="mole" onclick="whackMole(event.target)"></div>
+    </div>
+    <div class="moleHole">
+      <div class="mole" onclick="whackMole(event.target)"></div>
+    </div>
+    <div class="moleHole">
+      <div class="mole" onclick="whackMole(event.target)"></div>
+    </div>
+    <div class="moleHole">
+      <div class="mole" onclick="whackMole(event.target)"></div>
+    </div>
+  </div>
+  <div class="timeAndScore">
+    <div>
+      Time: <span class="time">30</span>
+    </div>
+    <div>
+      Score: <span class="score">0</span>
+    </div>
+  </div>
+  <button class="playButton active" onclick="startGame()">Play</button>
+  <button class="stopButton" onclick="stopGame()">Stop</button>
+
+<script>
+  var moleLoop;
+  var timerLoop;
+ 
+  function startGame() {
+    startTimer();
+    showMoles();
+    resetScore();
+    
+    const playButton = document.getElementsByClassName('playButton')[0];
+    const stopButton = document.getElementsByClassName('stopButton')[0];
+    playButton.classList.remove('active');
+    stopButton.classList.add('active');
+  }
+  
+  function stopGame() {
+    clearInterval(moleLoop);
+    clearInterval(timerLoop);
+    
+    const playButton = document.getElementsByClassName('playButton')[0];
+    const stopButton = document.getElementsByClassName('stopButton')[0];
+    playButton.classList.add('active');
+    stopButton.classList.remove('active');
+  }
+  
+  function startTimer() {
+    const timer = document.getElementsByClassName('time')[0];
+    timer.innerHTML = 30;
+    timerLoop = setInterval(function() {
+      const currentTime = parseInt(timer.innerHTML);
+      if (currentTime == 0) {
+        return stopGame();
+      }
+      timer.innerHTML = currentTime - 1;
+    }, 1000);
+  }
+  
+  function stopTimer() {
+    const timer = document.getElementsByClassName('time')[0];
+    timer.innerHTML = 30;
+    clearInterval(timerLoop);
+  }
+  
+  function resetScore() {
+    const score = document.getElementsByClassName('score')[0];
+    score.innerHTML = 0;
+  }
+
+  function showMoles() {
+    console.log('starting game...');
+    moleLoop = setInterval(showMole, 1500);
+  }
+  
+  function showMole() {
+    const moles = Array.from(document.querySelectorAll('.mole:not(.active)'));
+    const moleIndex = Math.floor(Math.random() * moles.length);
+    const mole = moles[moleIndex];
+    if (!mole) return;
+    mole.classList.add('active');
+    const moleTimeout = (Math.random() * 2) + 1;
+    setTimeout(function() { hideMole(mole) }, moleTimeout * 1000);
+  }
+  
+  function hideMole(mole) {
+    mole.classList.remove('active');
+  }
+  
+  function whackMole(mole) {
+    console.log(mole);
+    if (!mole.classList.contains('active')) { return; }
+    mole.classList.remove('active');
+    const score = document.getElementsByClassName('score')[0];
+    const currentScore = parseInt(score.innerHTML);
+    score.innerHTML = currentScore + 1;
+  }
+</script>
+
+
+</body>
+</html>
